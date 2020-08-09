@@ -53,7 +53,7 @@
   <div class="hero mt-5" id="connect">
     <div class="p-4 text-center">
       <div class="container">
-        <h1 class="text-center">Message Sent !</h1>
+        <h1 class="text-center">Message Details</h1>
         <div>
           <?php
             if(isset( $_POST['name']))
@@ -79,7 +79,6 @@
             if(!$captcha)
             {
             echo 'Please complete the captcha to submit the form.';
-            die();
             }
             else {
               $secretKey = "6LfRgLkZAAAAAIohM8nUrHjXGnVwEJxRY0r9BFQf";
