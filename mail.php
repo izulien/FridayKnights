@@ -72,17 +72,35 @@
             } 
             if ($message === ''){
             echo "Message cannot be empty.";
+              die();
+            }
+            
+            $captcha=$_POST['g-recaptcha-response'];
+            if(!$captcha)
+            {
+            echo 'Please complete the captcha to submit the form.';
             die();
             }
+            else {
+              $secretKey = "6LfRgLkZAAAAAIohM8nUrHjXGnVwEJxRY0r9BFQf";
+              $url = 'https://www.google.com/recaptcha/api/siteverify?secret=' . urlencode($secretKey) .  '&response=' . urlencode($captcha);
+              $response = file_get_contents($url);$responseKeys = json_decode($response,true);
+            }
 
-            $content="From: $name \nEmail: $email \nMessage: $message";
-            $to = "mailbag@fridayknights.fun, james@fridayknights.fun";
-            $subject = "Friday Knight's Form Inquiry";
-            $headers = "From: " . $email . "\r\n" . "Content-type: text/html;charset=UTF-8" . "\r\n";
-
-            mail($to, $subject, $content, $headers);
-            echo "email on its way, we will get back to you shortly";
-
+            if($responseKeys["success"]) {
+              $content="From: $name \nEmail: $email \nMessage: $message";
+              $to = "james@fridayknights.fun";
+              $subject = "Friday Knight's Form Inquiry";
+              $headers = "From: " . $email . "\r\n" . "Content-type: text/html;charset=UTF-8" . "\r\n";
+  
+              mail($to, $subject, $content, $headers);
+              echo "email on its way, we will get back to you shortly";
+              } 
+              else 
+              {
+              echo 'Your submission attempt has been blocked by anti-spam measures.  
+              If this continues and you are not a robot, please reach out to our team via social media.';
+              }
           ?>
         </div>
         <a href="index.html" class="btn btn-success">Go Back</a>
